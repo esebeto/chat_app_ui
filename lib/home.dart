@@ -8,9 +8,12 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  final GlobalKey<ScaffoldState> _globalKey = GlobalKey();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: _globalKey,
       backgroundColor: const Color(0x0ff17171),
       body: Stack(
         children: [
@@ -22,7 +25,9 @@ class _HomePageState extends State<HomePage> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     IconButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        _globalKey.currentState!.openDrawer();
+                      },
                       icon: const Icon(
                         Icons.menu,
                         color: Colors.white,
@@ -150,7 +155,7 @@ class _HomePageState extends State<HomePage> {
             right: 0,
             bottom: 0,
             child: Container(
-              padding: EdgeInsets.symmetric(vertical: 15),
+              padding: const EdgeInsets.symmetric(vertical: 15),
               height: 200,
               decoration: const BoxDecoration(
                 color: Colors.white,
@@ -160,7 +165,7 @@ class _HomePageState extends State<HomePage> {
                 ),
               ),
               child: ListView(
-                padding: EdgeInsets.only(left: 25),
+                padding: const EdgeInsets.only(left: 25),
                 children: [
                   buildConversationRow(
                       'Laura', 'Hello, how are you', 'profile1.jpg', 0),
@@ -187,6 +192,81 @@ class _HomePageState extends State<HomePage> {
           backgroundColor: const Color(0xff27c1a9),
           child: const Icon(Icons.edit_outlined, size: 30),
           onPressed: () {},
+        ),
+      ),
+      drawer: Drawer(
+        shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.horizontal(
+            right: Radius.circular(40),
+          ),
+        ),
+        width: 275,
+        backgroundColor: Colors.black26,
+        child: Container(
+          decoration: const BoxDecoration(
+            color: Color(0xf71f1e1e),
+          ),
+          child: Padding(
+            padding: const EdgeInsets.fromLTRB(20, 50, 20, 20),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Column(
+                  children: [
+                    Row(
+                      children: [
+                        IconButton(
+                          onPressed: () {
+                            _globalKey.currentState!.openDrawer();
+                          },
+                          icon: const Icon(
+                            Icons.arrow_back_ios,
+                            color: Colors.white,
+                            size: 20,
+                          ),
+                        ),
+                        const SizedBox(height: 56),
+                        const Text(
+                          'Settings',
+                          style: TextStyle(color: Colors.white, fontSize: 16),
+                        )
+                      ],
+                    ),
+                    const SizedBox(height: 30),
+                    const Row(
+                      children: [
+                        UserAvatar(filename: 'profile1.jpg'),
+                        SizedBox(
+                          width: 12,
+                        ),
+                        Text(
+                          'Tom Brenan',
+                          style: TextStyle(
+                            color: Colors.white,
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 35),
+                    const DrawerItem(title: 'Account', icon: Icons.key),
+                    const DrawerItem(title: 'Chats', icon: Icons.chat_bubble),
+                    const DrawerItem(
+                        title: 'Notifications', icon: Icons.notifications),
+                    const DrawerItem(
+                        title: 'Data and Storage', icon: Icons.storage),
+                    const DrawerItem(title: 'Help', icon: Icons.help),
+                    const Divider(
+                      color: Colors.green,
+                      height: 35,
+                    ),
+                    const DrawerItem(
+                        title: 'Invite a Friend', icon: Icons.people_outline),
+                  ],
+                ),
+                const DrawerItem(title: 'Logout', icon: Icons.logout),
+              ],
+            ),
+          ),
         ),
       ),
     );
@@ -264,6 +344,41 @@ class _HomePageState extends State<HomePage> {
             style: const TextStyle(color: Colors.white, fontSize: 16),
           ),
         ],
+      ),
+    );
+  }
+}
+
+class DrawerItem extends StatelessWidget {
+  final String title;
+  final IconData icon;
+
+  const DrawerItem({
+    super.key,
+    required this.title,
+    required this.icon,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return InkWell(
+      onTap: () {},
+      child: Padding(
+        padding: const EdgeInsets.only(bottom: 20),
+        child: Row(
+          children: [
+            Icon(
+              icon,
+              color: Colors.white,
+              size: 20,
+            ),
+            const SizedBox(width: 40),
+            Text(
+              title,
+              style: const TextStyle(color: Colors.white, fontSize: 16),
+            )
+          ],
+        ),
       ),
     );
   }
