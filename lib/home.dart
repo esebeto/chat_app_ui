@@ -10,6 +10,45 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   final GlobalKey<ScaffoldState> _globalKey = GlobalKey();
 
+  List<Map<String, dynamic>> users = [
+    {
+      'name': 'Laura',
+      'message': 'Hello, how are you',
+      'filename': 'profile1.jpg',
+      'msgCount': 0,
+    },
+    {
+      'name': 'Kayla',
+      'message': 'Will you visit me',
+      'filename': 'profile2.jpg',
+      'msgCount': 2,
+    },
+    {
+      'name': 'Mary',
+      'message': 'I ate your ...',
+      'filename': 'profile3.jpg',
+      'msgCount': 6,
+    },
+    {
+      'name': 'Hellen',
+      'message': 'Are you with Kayla Again',
+      'filename': 'profile4.jpg',
+      'msgCount': 0,
+    },
+    {
+      'name': 'Louren',
+      'message': 'Barrow Money please',
+      'filename': 'profile5.jpg',
+      'msgCount': 0,
+    },
+    {
+      'name': 'Laura',
+      'message': 'Helle, how are you',
+      'filename': 'profile6.jpg',
+      'msgCount': 9,
+    },
+  ];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -100,11 +139,10 @@ class _HomePageState extends State<HomePage> {
             ],
           ),
           Positioned(
-            top: 190,
+            top: 180,
             left: 0,
             right: 0,
             child: Container(
-              padding: const EdgeInsets.only(top: 15, left: 25, right: 25),
               height: 220,
               decoration: const BoxDecoration(
                 color: Color(0xff27c1a9),
@@ -115,34 +153,35 @@ class _HomePageState extends State<HomePage> {
               ),
               child: Column(
                 children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      const Text(
-                        'Favorite contacts',
-                        style: TextStyle(color: Colors.white),
-                      ),
-                      IconButton(
-                        onPressed: () {},
-                        icon: const Icon(
-                          Icons.more_horiz,
-                          color: Colors.white,
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(25, 10, 25, 10),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        const Text(
+                          'Favorite contacts',
+                          style: TextStyle(color: Colors.white),
                         ),
-                      )
-                    ],
+                        IconButton(
+                          onPressed: () {},
+                          icon: const Icon(
+                            Icons.more_horiz,
+                            color: Colors.white,
+                          ),
+                        )
+                      ],
+                    ),
                   ),
                   SizedBox(
                     height: 90,
-                    child: ListView(
+                    child: ListView.builder(
+                      padding: const EdgeInsets.only(left: 25),
                       scrollDirection: Axis.horizontal,
-                      children: [
-                        buildContactAvatar('profile1.jpg', 'Alla'),
-                        buildContactAvatar('profile2.jpg', 'July'),
-                        buildContactAvatar('profile3.jpg', 'Mikle'),
-                        buildContactAvatar('profile4.jpg', 'Kler'),
-                        buildContactAvatar('profile5.jpg', 'Moane'),
-                        buildContactAvatar('profile6.jpg', 'Julie'),
-                      ],
+                      itemCount: users.length,
+                      itemBuilder: (context, index) {
+                        return buildContactAvatar(
+                            users[index]['filename'], users[index]['name']);
+                      },
                     ),
                   )
                 ],
@@ -150,12 +189,12 @@ class _HomePageState extends State<HomePage> {
             ),
           ),
           Positioned(
-            top: 365,
+            top: 355,
             left: 0,
             right: 0,
             bottom: 0,
             child: Container(
-              padding: const EdgeInsets.symmetric(vertical: 15),
+              padding: const EdgeInsets.only(top: 15),
               height: 200,
               decoration: const BoxDecoration(
                 color: Colors.white,
@@ -164,22 +203,17 @@ class _HomePageState extends State<HomePage> {
                   topRight: Radius.circular(40),
                 ),
               ),
-              child: ListView(
+              child: ListView.builder(
                 padding: const EdgeInsets.only(left: 25),
-                children: [
-                  buildConversationRow(
-                      'Laura', 'Hello, how are you', 'profile1.jpg', 0),
-                  buildConversationRow(
-                      'Kayla', 'Will you visit me', 'profile2.jpg', 2),
-                  buildConversationRow(
-                      'Mary', 'I ate your ...', 'profile3.jpg', 6),
-                  buildConversationRow(
-                      'Hellen', 'Are you with Kayla Again', 'profile4.jpg', 0),
-                  buildConversationRow(
-                      'Louren', 'Barrow Money please', 'profile5.jpg', 0),
-                  buildConversationRow(
-                      'Laura', 'Helle, how are you', 'profile6.jpg', 9),
-                ],
+                itemCount: users.length,
+                itemBuilder: (context, index) {
+                  return buildConversationRow(
+                    users[index]['name'],
+                    users[index]['message'],
+                    users[index]['filename'],
+                    users[index]['msgCount'],
+                  );
+                },
               ),
             ),
           ),
@@ -216,9 +250,7 @@ class _HomePageState extends State<HomePage> {
                     Row(
                       children: [
                         IconButton(
-                          onPressed: () {
-                            _globalKey.currentState!.openDrawer();
-                          },
+                          onPressed: () {},
                           icon: const Icon(
                             Icons.arrow_back_ios,
                             color: Colors.white,
@@ -363,8 +395,9 @@ class DrawerItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {},
+      focusColor: Colors.white,
       child: Padding(
-        padding: const EdgeInsets.only(bottom: 20),
+        padding: const EdgeInsets.only(bottom: 30),
         child: Row(
           children: [
             Icon(
@@ -372,7 +405,7 @@ class DrawerItem extends StatelessWidget {
               color: Colors.white,
               size: 20,
             ),
-            const SizedBox(width: 40),
+            const SizedBox(width: 30),
             Text(
               title,
               style: const TextStyle(color: Colors.white, fontSize: 16),
@@ -394,10 +427,10 @@ class UserAvatar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return CircleAvatar(
-      radius: 32,
+      radius: 30,
       backgroundColor: Colors.white,
       child: CircleAvatar(
-        radius: 29,
+        radius: 28,
         backgroundImage: Image.asset('assets/images/$filename').image,
       ),
     );
