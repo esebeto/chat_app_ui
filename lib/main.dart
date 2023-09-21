@@ -8,10 +8,13 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
+    return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'New WhatsApp UI',
-      home: HomePage(),
+      theme: ThemeData(
+        drawerTheme: const DrawerThemeData(scrimColor: Colors.transparent),
+      ),
+      home: const HomePage(),
     );
   }
 }
